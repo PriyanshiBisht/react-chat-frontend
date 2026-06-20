@@ -12,6 +12,7 @@ export default function Chat() {
     const [messages, setMessages] = useState([]);
     useEffect(() => {
   socket.on("receive_message", (data) => {
+       
     setMessages((prev) => [...prev, data]);
   });
    return () => {
