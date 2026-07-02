@@ -34,12 +34,15 @@ export default function Chat() {
       .then(data => setMessages(data));
   }
 }, [selectedUser]);
-  return (
-
-      <div className='flex h-screen'  >
+return (
+  <div className='flex h-screen w-full'>
+    <div className={selectedUser ? "hidden md:block md:w-1/3 shrink-0" : "w-full md:w-1/3 shrink-0"}>
      
       <Sidebar setSelectedUser={setSelectedUser}/>
-     <ChatWindow selectedUser={selectedUser}  messages={messages} setMessages={setMessages} socket={socket}/>
-      </div>
-  );
+    </div>
+    <div className={selectedUser ? "flex-1" : "hidden md:flex flex-1"}>
+      <ChatWindow selectedUser={selectedUser} messages={messages} setMessages={setMessages} socket={socket} setSelectedUser={setSelectedUser}/>
+    </div>
+  </div>
+);
 }

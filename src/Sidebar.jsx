@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
- import { useNavigate } from 'react-router-dom'
+ 
 
 export default function Sidebar({setSelectedUser}) {
     
@@ -11,15 +11,17 @@ export default function Sidebar({setSelectedUser}) {
 }, []);
  const myUsername = localStorage.getItem("username");
 
-const navigate = useNavigate();
+
 
 const handleLogout = () => {
+
   localStorage.removeItem("username");
-  navigate('/');
+  localStorage.removeItem("token");
+  window.location.replace("/"); 
 }
   return (
+<div className="w-full border-r bg-gray-900 flex flex-col h-screen">
 
-    <div className="w-1/3 border-r bg-gray-900 flex flex-col h-screen">
         <div className=' text-white text-center mt-3'>Contacts</div>
    <div className='mt-4 flex-1 overflow-y-auto'>
     {
