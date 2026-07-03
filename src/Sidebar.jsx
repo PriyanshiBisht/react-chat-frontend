@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
  
 
-export default function Sidebar({setSelectedUser}) {
+export default function Sidebar({setSelectedUser,onlineUsers}) {
     
     const [users, setUsers] = useState([]);
     useEffect(() => {
@@ -20,7 +20,7 @@ const handleLogout = () => {
   window.location.replace("/"); 
 }
   return (
-<div className="w-full border-r bg-gray-900 flex flex-col h-screen">
+<div className="w-full border-r bg-gray-900 flex flex-col h-dvh">
 
         <div className=' text-white text-center mt-3'>Contacts</div>
    <div className='mt-4 flex-1 overflow-y-auto'>
@@ -29,7 +29,10 @@ const handleLogout = () => {
 
         users.filter(user => user.username !== myUsername)
         .map((v,i)=>{
-return <div key={i} className='border rounded-lg p-3 m-2 cursor-pointer hover:bg-indigo-500  text-white' onClick={() => setSelectedUser(v.username)}>{v.username}</div>
+return <div key={i} className='border rounded-lg p-3 m-2 cursor-pointer hover:bg-indigo-500 text-white flex items-center gap-2' onClick={() => setSelectedUser(v.username)}>
+  <span className={`w-2 h-2 rounded-full ${onlineUsers.includes(v.username) ? "bg-green-400" : "bg-gray-500"}`}></span>
+  {v.username}
+</div>
         }
     )
     } 

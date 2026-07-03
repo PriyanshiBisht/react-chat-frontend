@@ -10,13 +10,31 @@ export default function Chat() {
  
      const [selectedUser, setSelectedUser] = useState(null);
     const [messages, setMessages] = useState([]);
-    useEffect(() => {
+    const [onlineUsers, setOnlineUsers] = useState([]);
+const [typingUser, setTypingUser] = useState(null);
+    
+useEffect(() => {
   socket.on("receive_message", (data) => {
-       
     setMessages((prev) => [...prev, data]);
   });
-   return () => {
+
+  socket.on("online_users", (users) => {
+    setOnlineUsers(users);
+  });
+
+  socket.on("typing", (sender) => {
+    setTypingUser(sender);
+  });
+
+  socket.on("stop_typing", () => {
+    setTypingUser(null);
+  });
+
+  return () => {
     socket.off("receive_message");
+    socket.off("online_users");
+    socket.off("typing");
+    socket.off("stop_typing");
   };
 }, []);
 
@@ -35,13 +53,13 @@ export default function Chat() {
   }
 }, [selectedUser]);
 return (
-  <div className='flex h-screen w-full'>
+  <div className='flex h-dvh w-full'>
     <div className={selectedUser ? "hidden md:block md:w-1/3 shrink-0" : "w-full md:w-1/3 shrink-0"}>
      
-      <Sidebar setSelectedUser={setSelectedUser}/>
+      <Sidebar setSelectedUser={setSelectedUser} onlineUsers={onlineUsers}/>
     </div>
     <div className={selectedUser ? "flex-1" : "hidden md:flex flex-1"}>
-      <ChatWindow selectedUser={selectedUser} messages={messages} setMessages={setMessages} socket={socket} setSelectedUser={setSelectedUser}/>
+      <ChatWindow selectedUser={selectedUser} messages={messages} setMessages={setMessages} socket={socket} setSelectedUser={setSelectedUser} typingUser={typingUser}/>
     </div>
   </div>
 );

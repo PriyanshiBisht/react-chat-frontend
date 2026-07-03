@@ -32,7 +32,21 @@ export default function MessageInput({setMessages,messages,selectedUser,socket})
   placeholder="Type a message..."
   className="flex-1 border rounded-lg p-2"
   value={input}
-  onChange={(e) => setInput(e.target.value)}
+ onChange={(e) => {
+  setInput(e.target.value);
+  socket.emit("typing", {
+    sender: localStorage.getItem("username"),
+    receiver: selectedUser
+  });
+  
+  // 2 seconds baad stop_typing bhejo
+  setTimeout(() => {
+    socket.emit("stop_typing", {
+      sender: localStorage.getItem("username"),
+      receiver: selectedUser
+    });
+  }, 2000);
+}}
 />
 <button className="bg-blue-500 text-white p-2  rounded-lg" onClick={handleMessage}>Send</button>
     
